@@ -10,7 +10,7 @@ import { TodosModule } from './todos/todos.module';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client/build'),
+      rootPath: join(__dirname, '../..', 'client/build'),
       exclude: ['/api*'],
     }),
     TodosModule,

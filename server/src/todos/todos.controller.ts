@@ -32,7 +32,7 @@ export class TodosController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return this.todosService.delete(id);
+  async remove(@Param('id') id: string) {
+    return this.todosService.remove(id);
   }
 }

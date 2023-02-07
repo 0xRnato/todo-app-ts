@@ -13,7 +13,10 @@ export class TodosService {
   }
 
   async create(createTodoDto: CreateTodoDto): Promise<Todo> {
-    return this.todoModel.create(createTodoDto);
+    return this.todoModel.create({
+      name: createTodoDto.name,
+      completed: false,
+    });
   }
 
   async update(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
@@ -22,7 +25,7 @@ export class TodosService {
     });
   }
 
-  async delete(id: string) {
+  async remove(id: string) {
     return this.todoModel.findByIdAndRemove(id);
   }
 }
