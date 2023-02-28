@@ -37,6 +37,15 @@ export const updateTodo = createAsyncThunk(
   },
 );
 
+export const editTodo = createAsyncThunk(
+  'todo/edit',
+  async (params: { id: string; editing: boolean }) => {
+    const { id, editing } = params;
+    const response = await update(id, updateTodoDto);
+    return response;
+  },
+);
+
 export const removeTodo = createAsyncThunk(
   'todo/remove',
   async (id: string) => {

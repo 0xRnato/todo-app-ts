@@ -28,12 +28,15 @@ import {
   selectTodoList,
 } from './todoSlice';
 
+import { Todo } from './todo.types';
+
 export function Todo() {
   //todo list
   const todoList = useAppSelector(selectTodoList);
   const dispatch = useAppDispatch();
   const [newTodo, setNewTodo] = useState({ name: '' });
   const [error, setError] = useState('');
+  const [editValue, setEditValue] = useState('');
 
   // dialog
   const [open, setOpen] = useState(false);
@@ -57,6 +60,16 @@ export function Todo() {
       setNewTodo({ name: '' });
     }
   };
+  const handleEdit = (_todo: Todo) => {
+    dispatch(
+      updateTodo({
+        id: _todo._id,
+        updateTodoDto: {
+          name: 'new name',
+        },
+      }),
+    );
+  }
 
   useEffect(() => {
     dispatch(findAllTodos());
@@ -83,26 +96,13 @@ export function Todo() {
                       edge="end"
                       aria-label="edit"
                       style={{ marginRight: 10 }}
-                      onClick={() =>
-                        dispatch(
-                          updateTodo({
-                            id: todo._id,
-                            updateTodoDto: {
-                              name: 'new name',
-                            },
-                          }),
-                        )
-                      }
+                      onClick={handleEdit}
                     >
                       <EditIcon />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Delete">
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => dispatch(removeTodo(todo._id))}
-                    >
+                    <IconButton edge="end" aria-label="delete" onClick={() => dispatch(removeTodo(todo._id))}>
                       <DeleteIcon />
                     </IconButton>
                   </Tooltip>
@@ -133,15 +133,37 @@ export function Todo() {
                     inputProps={{ 'aria-labelledby': labelId }}
                   />
                 </ListItemIcon>
-                <ListItemText
-                  id={labelId}
-                  disableTypography
-                  primary={
-                    <Typography variant="body2" style={{ color: '#FFF' }}>
-                      {todo.name}
-                    </Typography>
-                  }
-                />
+                {todo.editing ? (
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Description"
+                    type="text"
+                    fullWidth
+                    required
+                    variant="standard"
+                    // value={newTodo.name}
+                    // onChange={(e) => setNewTodo({ name: e.target.value })}
+                    // {...(error && { error: true, helperText: error })}
+                  />
+                ) : (
+                  <ListItemText
+                    id={labelId}
+                    disableTypography
+                    primary={
+                      todo.completed ? (
+                        <Typography variant="body2" style={{ color: '#616161' }} component="s">
+                          {todo.name}
+                        </Typography>
+                      ) : (
+                        <Typography variant="body2" style={{ color: '#FFF' }}>
+                          {todo.name}
+                        </Typography>
+                      )
+                    }
+                  />
+                )}
               </ListItemButton>
             </ListItem>
           );

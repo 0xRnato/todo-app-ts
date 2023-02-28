@@ -1,0 +1,4 @@
+edit
+split todo in more components
+update readme
+fix localost ip (client/src/env.ts)

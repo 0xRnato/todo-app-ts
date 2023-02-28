@@ -2,6 +2,7 @@ export interface Todo {
   readonly _id: string;
   readonly name: string;
   readonly completed: boolean;
+  readonly editing?: boolean;
 }
 
 export interface CreateTodoDto {
